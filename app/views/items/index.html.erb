@@ -1,0 +1,62 @@
+<%= render "layouts/header" %>
+<table class="table table-bordered">
+  <tbody>
+  <th>カテゴリー</th>
+  <% @categories.each do |category| %>
+
+    <th><%= link_to category.name, category_path(category) %></th>
+  <% end %>
+  </tbody>
+  <tbody>
+  <th>場所</th>
+  <% @places.each do |place| %>
+
+    <th><%= link_to place.name, place_path(place) %></th>
+  <% end %>
+
+  </tbody>
+</table>
+<div>
+
+  <h2>商品一覧（全<%= @items.count %>件）</h2>
+
+  <table class="table  table-inverse">
+    <thead>
+    <tr>
+      <th>名前</th>
+      <th>ジャンル</th>
+      <th>場所</th>
+      <th>賞味期限</th>
+      <th>個数</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr>
+      <% @items.each do |item| %>
+        <td><%= item.name %></td>
+
+        <% category = Category.find(item.category_id) %>
+        <td><%= category.name %></td>
+
+        <% place = Place.find(item.place_id) %>
+        <td><%= place.name %></td>
+        <td><%= item.expiration_date %></td>
+
+
+        <td>
+          <%= form_for(item, url: item_path(item), method: :patch) do |f| %>
+            <%= f.select :count, (1..200) %>
+            <%= f.submit "変更する" %>
+            </td>
+
+            <td><%= link_to '消去', item_path(item), method: :delete %></td>
+            </tr>
+            </tbody>
+          <% end %>
+      <% end %>
+      </table>
+
+
+</div>

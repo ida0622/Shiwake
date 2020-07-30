@@ -1,0 +1,24 @@
+<%= render "layouts/header" %>
+<div>
+  <%= form_for(@item, url: items_path(@item)) do |f| %>
+    <h2>商品</h2>
+    <br>
+    <%= f.label :category_id, "ジャンル" %>
+    <%= f.collection_select :category_id, Category.all, :id, :name %>
+    <%= f.label :category_id, "場所" %>
+    <%= f.collection_select :place_id, Place.all, :id, :name %>
+    <%= f.label :name, "名前" %>
+    <%= f.text_field :name %>　　
+    <%= f.select :count, (1..200) %>個
+    <%= f.label :"賞味期限" %>
+    <%= f.date_select(
+            :expiration_date,
+            use_month_numbers: true, # jan, febとかじゃなくて数字で月を表現
+            start_year: (Time.now.year - 5), # 何年から表示させるか
+            end_year: (Time.now.year + 20), # 何年まで表示させるか
+            default: Date.new(1989, 1, 1), # 最初に表示されている年月日
+            date_separator: '/') # 年月日を仕切る文字
+    %>
+    <%= f.submit "追加", class: "btn btn-primary" %>
+  <% end %>
+</div>
